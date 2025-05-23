@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import express from 'express';
 import dotenv from "dotenv"; 
 import todoRoutes from "./routes/todo.routes.js"
@@ -12,6 +13,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.json());
+
+if (process.env.NODE_ENV === 'production') {
+    try {
+        // Build frontend if dist doesn't exist
+        execSync('cd frontend && npm install && npm run build', { stdio: 'inherit' });
+    } catch (error) {
+        console.log('Frontend already built or build failed:', error.message);
+    }
+}
 
 // Add root route
 app.get('/', (req, res) => {
