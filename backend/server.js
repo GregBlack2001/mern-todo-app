@@ -9,6 +9,16 @@ const app = express();
 
 app.use(express.json());
 
+// Add root route
+app.get('/', (req, res) => {
+    res.json({ 
+        message: "Welcome to MERN Todo API!", 
+        version: "1.0.0",
+        endpoints: {
+            todos: "/api/todos"
+        }
+    });
+});
 
 app.use("/api/todos", todoRoutes)
 
